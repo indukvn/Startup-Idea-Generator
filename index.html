@@ -3,129 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Startup Idea Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7fa;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-
-    .container {
-      width: 70%;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .header {
-      text-align: center;
-      color: #007BFF;
-      font-size: 2.5em;
-      margin-bottom: 30px;
-    }
-
-    .output {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .output p {
-      margin: 10px 0;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #777;
-    }
-
-    .footer a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-
-    .error {
-      color: red;
-    }
-
-    select {
-      padding: 10px;
-      margin: 10px 0;
-    }
-
-    button {
-      padding: 10px 15px;
-      font-size: 1rem;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
+  <title>Business Idea Generator</title>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h2>Startup Idea Generator</h2>
-    </div>
-
-    <div>
-      <label for="category">Choose a domain to generate ideas:</label>
-      <select id="category">
-        <option value="technology">Technology</option>
-        <option value="health">Health</option>
-        <option value="finance">Finance</option>
-        <option value="education">Education</option>
-      </select>
-      <button onclick="generateIdea()">Generate Idea</button>
-    </div>
-
-    <div class="output">
-      <h3>Generated Idea:</h3>
-      <p id="ideaOutput">Your idea will appear here...</p>
-    </div>
-
-    <div class="footer">
-      <p>Powered by AI to help you generate startup ideas!</p>
-    </div>
+  <div id="business-idea-container">
+    <h2>Generated Business Idea</h2>
+    <p id="business-idea">Loading...</p>
+    <button onclick="generateBusinessIdea()">Generate Idea</button>
   </div>
 
   <script>
-    async function generateIdea() {
-      const category = document.getElementById('category').value;
-      const ideaOutput = document.getElementById('ideaOutput');
-      
-      try {
-        // Make API call to the free AI-based business idea generator
-        const response = await fetch(`https://impactapi.com/ai-based-business-ideas-generator/api/generateIdea?category=${category}`, {
-          method: 'GET', // Make GET request
-          headers: {
-            'X-RapidAPI-Key': 'https://impactapi.com/ai-based-business-ideas-generator/api/generateIdea',  // Replace this with your RapidAPI Key
-            'Content-Type': 'application/json',
-          }
-        });
+    const generateBusinessIdea = async () => {
+      const response = await fetch('https://ai-based-business-ideas-generator.p.rapidapi.com/business-idea', {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Host': 'ai-startup-ideator.p.rapidapi.com',
+          'X-RapidAPI-Key': 'c29d47f4b9msh6ebec8fa6f238e0p17013cjsn061f400df469',  // Replace with your RapidAPI key
+        },
+      });
 
+      if (response.ok) {
         const data = await response.json();
-        
-        if (data && data.idea) {
-          ideaOutput.textContent = `Generated idea in the ${category} category: ${data.idea}`;
-        } else {
-          ideaOutput.textContent = 'Failed to generate idea. Please try again later.';
-        }
-
-      } catch (error) {
-        console.error('Error generating idea:', error);
-        ideaOutput.textContent = "Error generating idea. Please try again later.";
+        document.getElementById('business-idea').innerText = data.business_idea;
+      } else {
+        document.getElementById('business-idea').innerText = 'Error generating idea';
       }
-    }
+    };
   </script>
 </body>
 </html>
