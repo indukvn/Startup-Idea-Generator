@@ -1,11 +1,15 @@
-const fetch = require('node-fetch');  // Ensure node-fetch is included
+const fetch = require('node-fetch'); // Ensure node-fetch is included
 
-export default async function handler(req, res) {
+async function handler(req, res) {
+  // Ensure we handle only POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
+  // Extracting domain and audience from the request body
   const { domain, audience } = req.body;
+  
+  // Check if required fields are present
   if (!domain || !audience) {
     return res.status(400).json({ error: 'Domain and Audience are required' });
   }
@@ -13,7 +17,7 @@ export default async function handler(req, res) {
   const prompt = `Generate a random startup idea for a ${domain} product targeting ${audience}. Include a one-liner pitch, MVP idea, and monetization strategy.`;
 
   try {
-    // Replace with your RapidAPI key and correct endpoint
+    // Fetch data from the API
     const response = await fetch('https://ai-based-business-ideas-generator.p.rapidapi.com/business-idea', {
       method: 'GET',
       headers: {
@@ -22,16 +26,33 @@ export default async function handler(req, res) {
       },
     });
 
+    // If the response is successful, proceed
     if (response.ok) {
       const data = await response.json();
+      
+      // Log the full response data to debug
+      console.log('Full API Response:', data);
 
-      // Log the full response to understand its structure
-      console.log('API Response:', data);
-
-      // Check if the response contains the expected idea field
+      // Check if 'idea' exists in the response data
       if (data && data.idea) {
-        const ideaText = data.idea.trim(); // Extract the idea text
+        const ideaText = data.idea.trim(); // Get the idea text
         res.status(200).json({ idea: ideaText });
       } else {
+        // If 'idea' is missing or undefined, send a proper error message
+        console.error('API response does not contain "idea" field:', data);
         res.status(500).json({ error: 'API response does not contain an idea' });
       }
+    } else {
+      // If the API response is not successful, return the error status
+      console.error('Error fetching data from API:', response.statusText);
+      res.status(500).json({ error: 'Error fetching data from the API' });
+    }
+  } catch (error) {
+    // Handle network errors or issues with fetching data
+    console.error('Error during API request:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+// Export the handler function using CommonJS syntax
+module.exports = handler;
