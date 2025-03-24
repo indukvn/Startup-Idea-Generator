@@ -304,20 +304,21 @@
   container.appendChild(clone);
   document.body.appendChild(container);
 
-  // Convert to image
+  const theme = document.body.getAttribute("data-theme");
+  const bgColor = theme === "dark" ? "#1e1e2f" : "#ffffff";
+
   const canvas = await html2canvas(clone, {
-    backgroundColor: "#fff"
+    backgroundColor: bgColor
   });
 
   const link = document.createElement("a");
-  link.download = "ai_idea.png";
-  link.href = canvas.toDataURL();
+  link.download = "ai_idea.jpg";
+  link.href = canvas.toDataURL("image/jpeg");
   link.click();
 
-  // Cleanup
   document.body.removeChild(container);
 }
-
+    
 
     function toggleTheme() {
       const body = document.body;
