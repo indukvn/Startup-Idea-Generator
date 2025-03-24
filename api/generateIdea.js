@@ -14,7 +14,7 @@ async function handler(req, res) {
     return res.status(400).json({ error: 'Domain and Audience are required' });
   }
 
-  const prompt = `Generate a random startup idea for a ${domain} product targeting ${audience}. Include a one-liner pitch, MVP idea, and monetization strategy.`;
+  const prompt = `Generate a random startup idea for a ${domain} product targeting ${audience}. Include a two-liner pitch, MVP idea, and monetization strategy.`;
 
   try {
     // Fetch data from the API
@@ -34,8 +34,8 @@ async function handler(req, res) {
       console.log('Full API Response:', data);
 
       // Check if 'idea' exists in the response data
-      if (data && data.idea) {
-        const ideaText = data.idea.trim(); // Get the idea text
+      if (data && data.business_idea) {
+        const ideaText = data.business_idea.trim(); // Get the idea text
         res.status(200).json({ idea: ideaText });
       } else {
         // If 'idea' is missing or undefined, send a proper error message
