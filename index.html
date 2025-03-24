@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Startup Idea Generator</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     :root {
       --primary: #6366f1;
@@ -11,6 +12,13 @@
       --bg: #f9fafb;
       --card-bg: #ffffff;
       --text: #1f2937;
+      --transition: all 0.4s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1e1e2f;
+      --card-bg: #2c2c3a;
+      --text: #f1f5f9;
     }
 
     body {
@@ -22,18 +30,21 @@
       flex-direction: column;
       align-items: center;
       padding: 40px 20px;
+      transition: var(--transition);
     }
 
     h1 {
       color: var(--primary);
       font-size: 2.5rem;
       margin-bottom: 10px;
+      transition: var(--transition);
     }
 
     p.subtitle {
       font-size: 1.1rem;
       margin-bottom: 30px;
       color: #6b7280;
+      transition: var(--transition);
     }
 
     .controls {
@@ -49,6 +60,7 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       outline: none;
+      transition: var(--transition);
     }
 
     button {
@@ -56,7 +68,6 @@
       color: white;
       border: none;
       cursor: pointer;
-      transition: background 0.2s;
     }
 
     button:hover {
@@ -72,12 +83,15 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
       margin-top: 30px;
       display: none;
+      animation: fadeIn 0.7s ease-in-out;
+      transition: var(--transition);
     }
 
     .card h2 {
       margin-top: 0;
       font-size: 1.6rem;
       color: var(--accent);
+      transition: var(--transition);
     }
 
     .card p {
@@ -90,6 +104,12 @@
       margin-top: 60px;
       color: #9ca3af;
       font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
     }
 
     @media screen and (max-width: 480px) {
@@ -102,9 +122,29 @@
         width: 100%;
       }
     }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      background-color: var(--card-bg);
+      color: var(--text);
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body>
+<body data-theme="light">
+
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
 
   <h1>🚀 AI Startup Idea Generator</h1>
   <p class="subtitle">Instantly brainstorm startup ideas based on your target domain and audience</p>
@@ -141,16 +181,14 @@
   </div>
 
   <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
-  <button onclick="copyIdea()">📋 Copy Idea</button>
-  <button onclick="saveIdeaImage()">🖼️ Save as Image</button>
-</div>
+    <button onclick="copyIdea()">📋 Copy Idea</button>
+    <button onclick="saveIdeaImage()">🖼️ Save as Image</button>
+  </div>
 
   <div class="footer">
-  Made with 💙 by Indu | Powered by AI | Portfolio Project |
-  <a href="https://sites.google.com/view/indukvn/home" target="_blank" style="color: var(--primary); text-decoration: none;">
-    Visit My Portfolio
-  </a>
-</div>
+    Made with 💙 by Indu | Powered by AI | Portfolio Project |
+    <a href="https://sites.google.com/view/indukvn/home" target="_blank">Visit My Portfolio</a>
+  </div>
 
   <script>
     async function generateIdea() {
@@ -167,6 +205,9 @@
       monetizationText.innerText = "Planning monetization...";
 
       ideaCard.style.display = "block";
+      ideaCard.classList.remove("fadeIn"); // reset animation
+      void ideaCard.offsetWidth; // trigger reflow
+      ideaCard.classList.add("fadeIn");
 
       try {
         const response = await fetch('/api/generateIdea', {
@@ -181,8 +222,6 @@
 
         if (data.idea) {
           ideaText.innerText = data.idea;
-
-          // Fallback fake MVP & monetization (since API doesn't provide it)
           mvpText.innerText = `Build a simple landing page for ${audience}, validate interest with an email waitlist, and launch basic features.`;
           monetizationText.innerText = `Use a freemium model, offer premium tools for ${domain} users, or charge for early access.`;
         } else {
@@ -197,34 +236,37 @@
         monetizationText.innerText = "-";
       }
     }
+
+    function copyIdea() {
+      const idea = document.getElementById("ideaText").innerText;
+      const mvp = document.getElementById("mvpText").innerText;
+      const monetization = document.getElementById("monetizationText").innerText;
+
+      const fullText = `💡 Startup Idea:\n${idea}\n\n🔧 MVP Suggestion:\n${mvp}\n\n💰 Monetization Strategy:\n${monetization}`;
+
+      navigator.clipboard.writeText(fullText).then(() => {
+        alert("Idea copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy idea. Try again.");
+      });
+    }
+
+    function saveIdeaImage() {
+      const card = document.getElementById("ideaCard");
+      html2canvas(card).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "startup_idea.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const currentTheme = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", currentTheme === "light" ? "dark" : "light");
+    }
   </script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script>
-  function copyIdea() {
-    const idea = document.getElementById("ideaText").innerText;
-    const mvp = document.getElementById("mvpText").innerText;
-    const monetization = document.getElementById("monetizationText").innerText;
-
-    const fullText = `💡 Startup Idea:\n${idea}\n\n🔧 MVP Suggestion:\n${mvp}\n\n💰 Monetization Strategy:\n${monetization}`;
-
-    navigator.clipboard.writeText(fullText).then(() => {
-      alert("Idea copied to clipboard!");
-    }).catch(err => {
-      alert("Failed to copy idea. Try again.");
-    });
-  }
-
-  function saveIdeaImage() {
-    const card = document.getElementById("ideaCard");
-    html2canvas(card).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "startup_idea.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    });
-  }
-</script>
-
 
 </body>
 </html>
