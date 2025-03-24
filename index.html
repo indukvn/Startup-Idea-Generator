@@ -37,6 +37,10 @@
       border-radius: 8px;
     }
 
+    .output p {
+      margin: 10px 0;
+    }
+
     .footer {
       text-align: center;
       margin-top: 40px;
@@ -98,13 +102,24 @@
     async function generateIdea() {
       const category = document.getElementById('category').value;
       const ideaOutput = document.getElementById('ideaOutput');
-
+      
       try {
-        const response = await fetch('https://randomuser.me/api/');
+        // Make API call to the free AI-based business idea generator
+        const response = await fetch(`https://impactapi.com/ai-based-business-ideas-generator/api/generateIdea?category=${category}`, {
+          method: 'GET', // Make GET request
+          headers: {
+            'X-RapidAPI-Key': 'https://impactapi.com/ai-based-business-ideas-generator/api/generateIdea',  // Replace this with your RapidAPI Key
+            'Content-Type': 'application/json',
+          }
+        });
+
         const data = await response.json();
-        const randomIdea = `Generate a business idea in ${category} related to ${data.results[0].name.first} ${data.results[0].name.last}`;
         
-        ideaOutput.textContent = randomIdea;
+        if (data && data.idea) {
+          ideaOutput.textContent = `Generated idea in the ${category} category: ${data.idea}`;
+        } else {
+          ideaOutput.textContent = 'Failed to generate idea. Please try again later.';
+        }
 
       } catch (error) {
         console.error('Error generating idea:', error);
