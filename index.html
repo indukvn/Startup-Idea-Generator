@@ -180,10 +180,16 @@
     <p id="monetizationText">Loading...</p>
   </div>
 
-  <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+<!--   <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
     <button onclick="copyIdea()">📋 Copy Idea</button>
     <button onclick="saveIdeaImage()">🖼️ Save as Image</button>
-  </div>
+  </div> -->
+
+  <div class="buttons" id="action-buttons" style="display: none;">
+  <button onclick="copyIdea()">📋 Copy Idea</button>
+  <button onclick="saveAsImage()">💾 Save as Image</button>
+</div>
+
 
   <div class="footer">
     Made with 💙 by Indu | Powered by AI | Portfolio Project |
@@ -235,6 +241,7 @@
         mvpText.innerText = "-";
         monetizationText.innerText = "-";
       }
+      document.getElementById("action-buttons").style.display = "flex";
     }
 
     function copyIdea() {
@@ -251,15 +258,60 @@
       });
     }
 
-    function saveIdeaImage() {
-      const card = document.getElementById("ideaCard");
-      html2canvas(card).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "startup_idea.png";
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
+    // function saveIdeaImage() {
+    //   const card = document.getElementById("ideaCard");
+    //   html2canvas(card).then(canvas => {
+    //     const link = document.createElement("a");
+    //     link.download = "startup_idea.png";
+    //     link.href = canvas.toDataURL();
+    //     link.click();
+    //   });
+    // }
+    async function saveAsImage() {
+  const ideaBox = document.getElementById("idea-box");
+
+  // Create a clone to add branding/footer without affecting DOM
+  const clone = ideaBox.cloneNode(true);
+
+  // Add branding logo
+  const logo = document.createElement("img");
+  logo.src = "i-removebg-preview.png"; // path relative to your GitHub repo root
+  logo.style.width = "60px";
+  logo.style.position = "absolute";
+  logo.style.top = "10px";
+  logo.style.right = "10px";
+  clone.appendChild(logo);
+
+  // Add footer
+  const footer = document.createElement("div");
+  footer.innerHTML = `Made with 💙 by Indu | <a href="https://sites.google.com/view/indukvn/home" target="_blank">Visit Portfolio</a>`;
+  footer.style.textAlign = "center";
+  footer.style.marginTop = "20px";
+  footer.style.fontSize = "14px";
+  footer.style.color = "#666";
+  clone.appendChild(footer);
+
+  // Create a hidden container for snapshot
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.top = "-10000px";
+  container.appendChild(clone);
+  document.body.appendChild(container);
+
+  // Convert to image
+  const canvas = await html2canvas(clone, {
+    backgroundColor: "#fff"
+  });
+
+  const link = document.createElement("a");
+  link.download = "ai_idea.png";
+  link.href = canvas.toDataURL();
+  link.click();
+
+  // Cleanup
+  document.body.removeChild(container);
+}
+
 
     function toggleTheme() {
       const body = document.body;
