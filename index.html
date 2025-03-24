@@ -267,15 +267,15 @@
     //     link.click();
     //   });
     // }
-    async function saveAsImage() {
-  const ideaBox = document.getElementById("idea-box");
+  async function saveAsImage() {
+  const ideaBox = document.getElementById("ideaCard");
 
   // Create a clone to add branding/footer without affecting DOM
   const clone = ideaBox.cloneNode(true);
 
   // Add branding logo
   const logo = document.createElement("img");
-  logo.src = "i-removebg-preview.png"; // path relative to your GitHub repo root
+  logo.src = "i.png"; // path relative to your GitHub repo root
   logo.style.width = "60px";
   logo.style.position = "absolute";
   logo.style.top = "10px";
