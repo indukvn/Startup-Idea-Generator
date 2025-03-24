@@ -73,6 +73,20 @@
     button:hover {
       background-color: #4f46e5;
     }
+    
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .buttons button {
+      margin: 5px 0;
+    }
+
 
     .card {
       background-color: var(--card-bg);
@@ -276,9 +290,9 @@
   // Add branding logo
   const logo = document.createElement("img");
   logo.src = "i.png"; // path relative to your GitHub repo root
-  logo.style.width = "50px";
+  logo.style.width = "30px";
   logo.style.position = "absolute";
-  logo.style.top = "20px";
+  logo.style.top = "30px";
   logo.style.right = "10px";
   clone.appendChild(logo);
 
@@ -287,7 +301,7 @@
   footer.innerHTML = `Made with 💙 by Indu | Let's connect on linkedIn: @indu kvn`;
   footer.style.textAlign = "center";
   footer.style.marginTop = "20px";
-  footer.style.fontSize = "14px";
+  footer.style.fontSize = "12px";
   footer.style.color = "#666";
   clone.appendChild(footer);
 
