@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Startup Idea Generator</title>
+  <style>
+    body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #f9f9f9; text-align: center; padding: 50px; }
+    h1 { color: #007BFF; }
+    select, button { padding: 10px; margin: 10px; font-size: 16px; }
+    .idea-box { background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h1>🚀 AI Startup Idea Generator</h1>
+  <p>Choose a domain and audience to generate a cool fake startup idea!</p>
+
+  <select id="domain">
+    <option>AI</option>
+    <option>Health</option>
+    <option>Education</option>
+    <option>Remote Work</option>
+    <option>Finance</option>
+  </select>
+
+  <select id="audience">
+    <option>Students</option>
+    <option>Working Professionals</option>
+    <option>Freelancers</option>
+    <option>Parents</option>
+    <option>Gen Z</option>
+  </select>
+
+  <button onclick="generateIdea()">Generate Idea</button>
+
+  <div class="idea-box" id="output" style="display:none;">
+    <h2>✨ Idea for You</h2>
+    <p id="pitch"></p>
+    <p><strong>MVP:</strong> <span id="mvp"></span></p>
+    <p><strong>Monetization:</strong> <span id="money"></span></p>
+  </div>
+
+  <script>
+    async function generateIdea() {
+      const domain = document.getElementById("domain").value;
+      const audience = document.getElementById("audience").value;
+
+      try {
+        // Send a POST request to the Vercel API
+        const response = await fetch('/api/generateIdea', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ domain, audience })
+        });
+
+        const data = await response.json();
+        
+        // Display the generated idea
+        const generatedText = data.idea.split('\n');
+        document.getElementById("pitch").innerText = generatedText[0] || 'No pitch available';
+        document.getElementById("mvp").innerText = generatedText[1] || 'No MVP available';
+        document.getElementById("money").innerText = generatedText[2] || 'No monetization available';
+
+        document.getElementById("output").style.display = "block";
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong! Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
