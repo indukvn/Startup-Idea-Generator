@@ -140,9 +140,17 @@
     <p id="monetizationText">Loading...</p>
   </div>
 
+  <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+  <button onclick="copyIdea()">📋 Copy Idea</button>
+  <button onclick="saveIdeaImage()">🖼️ Save as Image</button>
+</div>
+
   <div class="footer">
-    Made with 💙 by Indu | Powered by AI | Portfolio Project
-  </div>
+  Made with 💙 by Indu | Powered by AI | Portfolio Project |
+  <a href="https://sites.google.com/view/indukvn/home" target="_blank" style="color: var(--primary); text-decoration: none;">
+    Visit My Portfolio
+  </a>
+</div>
 
   <script>
     async function generateIdea() {
@@ -190,6 +198,33 @@
       }
     }
   </script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+  function copyIdea() {
+    const idea = document.getElementById("ideaText").innerText;
+    const mvp = document.getElementById("mvpText").innerText;
+    const monetization = document.getElementById("monetizationText").innerText;
+
+    const fullText = `💡 Startup Idea:\n${idea}\n\n🔧 MVP Suggestion:\n${mvp}\n\n💰 Monetization Strategy:\n${monetization}`;
+
+    navigator.clipboard.writeText(fullText).then(() => {
+      alert("Idea copied to clipboard!");
+    }).catch(err => {
+      alert("Failed to copy idea. Try again.");
+    });
+  }
+
+  function saveIdeaImage() {
+    const card = document.getElementById("ideaCard");
+    html2canvas(card).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "startup_idea.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+</script>
+
 
 </body>
 </html>
