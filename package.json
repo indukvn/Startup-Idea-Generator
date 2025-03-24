@@ -1,0 +1,9 @@
+{
+  "name": "startup-idea-generator",
+  "version": "1.0.0",
+  "description": "AI Startup Idea Generator",
+  "main": "index.html",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
