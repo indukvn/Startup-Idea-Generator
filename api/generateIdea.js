@@ -1,6 +1,6 @@
-const fetch = require('node-fetch'); // Ensure node-fetch is included
+import fetch from 'node-fetch';  // Using ES Module import
 
-async function handler(req, res) {
+export default async function handler(req, res) {
   // Ensure we handle only POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
