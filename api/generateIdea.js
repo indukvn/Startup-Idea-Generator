@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       method: 'GET',
       headers: {
         'X-RapidAPI-Host': 'ai-based-business-ideas-generator.p.rapidapi.com',
-        'X-RapidAPI-Key': 'c29d47f4b9msh6ebec8fa6f238e0p17013cjsn061f400df469', // Add your API key here
+        'X-RapidAPI-Key': '86ec47eecemsh94a0559ea11aae4p141c3djsn880f08deaa89', // Add your API key here
       },
     });
 
