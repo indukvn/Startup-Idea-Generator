@@ -207,7 +207,8 @@
 
   <div class="footer">
     Made with 💙 by Indu | Powered by AI | Portfolio Project |
-    <a href="https://sites.google.com/view/indukvn/home" target="_blank">Visit My Portfolio</a>
+    <a href="https://sites.google.com/view/indukvn/home" target="_blank">Visit My Portfolio</a> | 
+    <a href="https://www.linkedin.com/in/indu-kvn-02224922a/" target="_blank">Let's Connect</a>
   </div>
 
   <script>
@@ -272,15 +273,6 @@
       });
     }
 
-    // function saveIdeaImage() {
-    //   const card = document.getElementById("ideaCard");
-    //   html2canvas(card).then(canvas => {
-    //     const link = document.createElement("a");
-    //     link.download = "startup_idea.png";
-    //     link.href = canvas.toDataURL();
-    //     link.click();
-    //   });
-    // }
   async function saveAsImage() {
   const ideaBox = document.getElementById("ideaCard");
 
@@ -292,11 +284,11 @@
   logo.src = "i.png"; // path relative to your GitHub repo root
   logo.style.width = "20px";
   logo.style.position = "absolute";
-  logo.style.top = "30px";
+  logo.style.top = "40px";
   logo.style.right = "10px";
   clone.appendChild(logo);
 
-  // Add footer
+  // footer
   const footer = document.createElement("div");
   footer.innerHTML = `Made with 💙 by Indu | Let's connect and build ideas on linkedIn: @indu kvn`;
   footer.style.textAlign = "center";
