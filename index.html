@@ -279,6 +279,19 @@
   // Create a clone to add branding/footer without affecting DOM
   const clone = ideaBox.cloneNode(true);
 
+  const theme = document.body.getAttribute("data-theme");
+  const bgColor = theme === "dark" ? "#1e1e2f" : "#ffffff";
+  const textColor = theme === "dark" ? "#f1f5f9" : "#1f2937";
+
+  clone.style.backgroundColor = bgColor;
+  clone.style.color = textColor;
+
+  // inline color on all paragraphs and headers
+  clone.querySelectorAll("p, h2").forEach(el => {
+    el.style.color = textColor;
+  });
+
+
   // Add branding logo
   const logo = document.createElement("img");
   logo.src = "i.png"; // path relative to your GitHub repo root
@@ -304,20 +317,19 @@
   container.appendChild(clone);
   document.body.appendChild(container);
 
-  const theme = document.body.getAttribute("data-theme");
-  const bgColor = theme === "dark" ? "#1e1e2f" : "#ffffff";
-
   const canvas = await html2canvas(clone, {
-    backgroundColor: bgColor
+    backgroundColor: bgColor,
+    scale: 2 // makes image sharper
   });
 
   const link = document.createElement("a");
-  link.download = "ai_idea.jpg";
+  link.download = "business_idea.jpg";
   link.href = canvas.toDataURL("image/jpeg");
   link.click();
 
   document.body.removeChild(container);
 }
+
     
 
     function toggleTheme() {
